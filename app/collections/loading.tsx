@@ -1,15 +1,16 @@
-import React from 'react'
+import React from "react";
 
-const loading = () => {
+export default function Loading() {
   return (
-    <div className='w-full h-screen flex justify-center items-center'>
-      <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/YouTube_Logo_2017.svg/3840px-YouTube_Logo_2017.svg.png"
-                alt="YouTube"
-                className="w-16 md:w-20"
-              />
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
+      <div className="flex flex-col items-center gap-4">
+        {/* Logo */}
+        <img
+          src="https://freepnglogo.com/images/all_img/1701508998white-youtube-logo-png.png"
+          alt="YouTube"
+          className="w-20 animate-pulse"
+        />
+      </div>
     </div>
-  )
+  );
 }
-
-export default loading
