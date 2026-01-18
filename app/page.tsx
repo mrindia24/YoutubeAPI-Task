@@ -6,16 +6,21 @@ import VideoCard from "./components/VideoCard";
 import CollectionSidebar from "./components/CollectionSidebar";
 import { Video } from "./types/video";
 import VideoPlayer from "./components/VideoPlayer";
+import { FiX } from "react-icons/fi";
 
 export default function HomePage() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const loadDefaultVideos = async () => {
     try {
       setLoading(true);
+      setVideos([]); // 🔥 clear before loading
+
       const res = await fetch("/api/youtube");
       const data = await res.json();
 
@@ -31,11 +36,15 @@ export default function HomePage() {
     }
   };
 
+  /* Search */
   const handleSearch = async (query: string) => {
     if (!query.trim()) return;
 
     try {
+      setHasSearched(true); // 🔥 mark as searched
       setLoading(true);
+      setVideos([]); // clear old videos
+
       const res = await fetch(`/api/youtube?q=${query}`);
       const data = await res.json();
 
@@ -50,6 +59,12 @@ export default function HomePage() {
       setLoading(false);
     }
   };
+  const resetToHome = async () => {
+    setHasSearched(false);
+    setActiveVideo(null);
+    await loadDefaultVideos();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     loadDefaultVideos();
@@ -59,13 +74,13 @@ export default function HomePage() {
     <>
       {/* VIDEO PLAYER MODAL */}
       {activeVideo && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center px-3">
-          <div className="bg-white rounded-xl w-full h-[90%] md:w-[80%] md:h-[80%] relative shadow-xl">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center px-3">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl w-full h-[90%] md:w-[80%] md:h-[80%] relative shadow-xl">
             <button
-              className="absolute top-3 right-3 text-xl text-gray-600"
+              className="absolute top-3 right-3 text-gray-400 hover:text-white transition "
               onClick={() => setActiveVideo(null)}
             >
-              ❌
+              <FiX size={22} />
             </button>
 
             <div className="w-full h-full p-3 md:p-6">
@@ -75,73 +90,92 @@ export default function HomePage() {
         </div>
       )}
 
-      <main className="min-h-screen bg-gray-100 relative">
-        {/* Sidebar */}
+      <main className="min-h-screen bg-zinc-950 text-gray-200 relative">
+        {/* SIDEBAR */}
         <CollectionSidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
 
-        {/* Header */}
-        <header className="bg-white shadow">
-          <div className="max-w-6xl mx-auto p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 justify-between">
+        {/* HEADER */}
+        <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-3">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/YouTube_Logo_2017.svg/3840px-YouTube_Logo_2017.svg.png"
+                src="https://freepnglogo.com/images/all_img/1701508998white-youtube-logo-png.png"
                 alt="YouTube"
-                className="w-16 md:w-20"
+                className="w-20"
               />
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold text-red-600">
-                  YouTube Playlist Curator
-                </h1>
-                <p className="text-xs md:text-sm text-gray-600">
-                  Search videos and save them into collections
-                </p>
-              </div>
             </div>
 
-            {/* Button */}
+            {/* Collections Button */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition w-full md:w-auto"
+              className="
+                flex items-center gap-2
+                px-4 py-2 rounded-full
+                bg-zinc-800 text-gray-300
+                hover:bg-zinc-700 hover:text-white
+                transition
+              "
             >
               📁 Collections
             </button>
           </div>
         </header>
 
-        {/* Search & Videos */}
+        {/* SEARCH + VIDEOS */}
         <section
           className={`
-            max-w-6xl mx-auto p-4 md:p-6 transition-all
+            max-w-7xl mx-auto px-4 md:px-6 py-6 transition-all
             ${sidebarOpen ? "md:ml-64" : ""}
           `}
         >
+          {/* Search */}
           <SearchBar onSearch={handleSearch} />
-
+          {hasSearched && !loading && (
+            <div className="flex justify-end mt-3">
+              <button
+                onClick={resetToHome}
+                className="
+        flex items-center gap-2
+        px-4 py-2 rounded-full
+        bg-zinc-800 text-gray-300
+        hover:bg-zinc-700 hover:text-white
+        transition
+      "
+              >
+                ⟲ Reset
+              </button>
+            </div>
+          )}
+          {/* Loading */}
           {loading && (
-            <p className="text-center text-gray-500 mt-6">
-              Loading videos...
-            </p>
+            <div className="flex justify-center mt-12">
+              <div className="h-8 w-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
+            </div>
           )}
 
+          {/* Empty */}
           {!loading && videos.length === 0 && (
-            <p className="text-center text-gray-500 mt-6">
-              No videos found
-            </p>
+            <div className="w-[100%] h-[100%]  flex justify-center items-center ">
+              <p className="text-center text-gray-400 mt-10">No videos found</p>
+            </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-6">
-            {videos.map((video) => (
-              <VideoCard
-                key={video.videoId}
-                video={video}
-                onPlay={() => setActiveVideo(video.videoId)}
-              />
-            ))}
-          </div>
+          {/* Videos Grid */}
+          {!loading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
+              {videos.map((video) => (
+                <VideoCard
+                  key={video.videoId}
+                  video={video}
+                  onPlay={() => setActiveVideo(video.videoId)}
+                />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </>

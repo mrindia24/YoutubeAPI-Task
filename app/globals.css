@@ -14,3 +14,6 @@
 .animate-modal {
   animation: modalEnter 0.25s ease-out;
 }
+button,icon{
+  cursor: pointer !important;
+}
