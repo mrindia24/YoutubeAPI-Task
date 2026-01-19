@@ -41,19 +41,16 @@ export default function VideoCard({ video, onPlay }: Props) {
           className="w-full h-44 object-cover"
         />
 
-        {/* Play overlay */}
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
           <FiPlay size={36} className="text-white" />
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         <h3 className="text-sm font-semibold text-gray-200 line-clamp-2 mb-3">
           {video.title}
         </h3>
 
-        {/* Save to Collection */}
         {collections.length > 0 && (
           <select
             className="
@@ -80,7 +77,6 @@ export default function VideoCard({ video, onPlay }: Props) {
         )}
       </div>
 
-      {/* Toast */}
       {showToast && (
         <div className="absolute top-3 right-3 bg-green-600 text-white text-xs px-3 py-1 rounded shadow">
           Saved ✓

@@ -14,12 +14,11 @@ export default function HomePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
 
   const loadDefaultVideos = async () => {
     try {
       setLoading(true);
-      setVideos([]); // 🔥 clear before loading
+      setVideos([]);
 
       const res = await fetch("/api/youtube");
       const data = await res.json();
@@ -41,9 +40,9 @@ export default function HomePage() {
     if (!query.trim()) return;
 
     try {
-      setHasSearched(true); // 🔥 mark as searched
+      setHasSearched(true);
       setLoading(true);
-      setVideos([]); // clear old videos
+      setVideos([]);
 
       const res = await fetch(`/api/youtube?q=${query}`);
       const data = await res.json();
@@ -72,7 +71,6 @@ export default function HomePage() {
 
   return (
     <>
-      {/* VIDEO PLAYER MODAL */}
       {activeVideo && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center px-3">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl w-full h-[90%] md:w-[80%] md:h-[80%] relative shadow-xl">
@@ -91,16 +89,13 @@ export default function HomePage() {
       )}
 
       <main className="min-h-screen bg-zinc-950 text-gray-200 relative">
-        {/* SIDEBAR */}
         <CollectionSidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
 
-        {/* HEADER */}
         <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-            {/* Logo */}
             <div className="flex items-center gap-3">
               <img
                 src="https://freepnglogo.com/images/all_img/1701508998white-youtube-logo-png.png"
@@ -109,7 +104,6 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Collections Button */}
             <button
               onClick={() => setSidebarOpen(true)}
               className="
@@ -125,14 +119,12 @@ export default function HomePage() {
           </div>
         </header>
 
-        {/* SEARCH + VIDEOS */}
         <section
           className={`
             max-w-7xl mx-auto px-4 md:px-6 py-6 transition-all
             ${sidebarOpen ? "md:ml-64" : ""}
           `}
         >
-          {/* Search */}
           <SearchBar onSearch={handleSearch} />
           {hasSearched && !loading && (
             <div className="flex justify-end mt-3">
@@ -150,21 +142,18 @@ export default function HomePage() {
               </button>
             </div>
           )}
-          {/* Loading */}
           {loading && (
             <div className="flex justify-center mt-12">
               <div className="h-8 w-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
 
-          {/* Empty */}
           {!loading && videos.length === 0 && (
             <div className="w-[100%] h-[100%]  flex justify-center items-center ">
               <p className="text-center text-gray-400 mt-10">No videos found</p>
             </div>
           )}
 
-          {/* Videos Grid */}
           {!loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
               {videos.map((video) => (

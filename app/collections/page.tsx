@@ -54,10 +54,8 @@ export default function CollectionsPage() {
 
  return (
     <main className="min-h-screen bg-zinc-950 text-gray-200">
-      {/* HEADER */}
       <header className="bg-zinc-900 border-b border-zinc-800">
        <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-  {/* Title */}
   <div>
     <h1 className="text-xl sm:text-2xl font-bold text-red-500">
       My Collections
@@ -67,7 +65,6 @@ export default function CollectionsPage() {
     </p>
   </div>
 
-  {/* Desktop Back Button */}
   <button
     onClick={() => router.push("/")}
     className="
@@ -84,7 +81,6 @@ export default function CollectionsPage() {
     <span className="text-sm font-medium">Back to Search</span>
   </button>
 
-  {/* Mobile Close Button */}
   <button
     onClick={() => router.push("/")}
     className="
@@ -103,10 +99,7 @@ export default function CollectionsPage() {
 </div>
 
       </header>
-
-      {/* CONTENT */}
       <section className="max-w-6xl mx-auto p-6">
-        {/* CREATE COLLECTION */}
         <div className="flex gap-3 mb-10">
           <input
             className="bg-zinc-900 border border-zinc-700 text-gray-200 placeholder-gray-500 rounded-lg px-4 py-2 w-72 focus:ring-2 focus:ring-red-500 outline-none"
@@ -237,9 +230,7 @@ export default function CollectionsPage() {
         )}
       </section>
 
-      {/* ===== MODALS ===== */}
 
-      {/* VIDEO PLAYER */}
       {activeVideo && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl w-[80%] h-[80%] p-4 relative">
@@ -289,7 +280,6 @@ export default function CollectionsPage() {
         </div>
       )}
 
-      {/* CLEAR */}
       {clearTarget && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-96">
@@ -315,7 +305,6 @@ export default function CollectionsPage() {
         </div>
       )}
 
-      {/* DELETE */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-96">
@@ -341,7 +330,6 @@ export default function CollectionsPage() {
         </div>
       )}
 
-      {/* REMOVE VIDEO */}
       {removeTarget && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-96">

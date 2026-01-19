@@ -21,7 +21,6 @@ export default function CollectionSidebar({ open, onClose }: Props) {
 
   return (
     <>
-      {/* Overlay (mobile) */}
       {open && (
         <div
           className="fixed inset-0 bg-black/60 z-40 md:hidden"
@@ -29,7 +28,6 @@ export default function CollectionSidebar({ open, onClose }: Props) {
         />
       )}
 
-      {/* Sidebar */}
       <div
         className={`
           fixed top-0 left-0 h-full w-64
@@ -39,7 +37,6 @@ export default function CollectionSidebar({ open, onClose }: Props) {
           ${open ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        {/* Header */}
         <div className="p-4 border-b border-zinc-800 flex justify-between items-center">
           <h2
             className="flex items-center gap-2 font-semibold text-lg text-gray-200 cursor-pointer"
@@ -57,7 +54,6 @@ export default function CollectionSidebar({ open, onClose }: Props) {
           </button>
         </div>
 
-        {/* Collection List */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {collections.length === 0 ? (
             <div className="flex flex-col items-center text-center mt-10">
@@ -66,9 +62,7 @@ export default function CollectionSidebar({ open, onClose }: Props) {
                 alt="No collections"
                 className="w-40 mb-4 opacity-90"
               />
-              <p className="text-sm text-gray-300">
-                No collections yet
-              </p>
+              <p className="text-sm text-gray-300">No collections yet</p>
               <p className="text-xs text-gray-500 mt-1">
                 Create one to start saving videos
               </p>
@@ -95,7 +89,6 @@ export default function CollectionSidebar({ open, onClose }: Props) {
           )}
         </div>
 
-        {/* ADD COLLECTION BUTTON (FOOTER) */}
         <div className="p-4 border-t border-zinc-800">
           <button
             onClick={goToCollections}
